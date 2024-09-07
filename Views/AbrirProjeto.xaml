@@ -38,13 +38,14 @@
                 Content="Procurar Arquivo" 
                 Width="120" Height="30" 
                 VerticalAlignment="Center" HorizontalAlignment="Left"
-                Command="{Binding BrowseProject}"/>
+                Command="{Binding cProcurarProjeto}"/>
             <Button 
                 x:Name="btnOpenProject" 
                 Content="Abrir Projeto" 
                 Margin="10,0" 
                 Width="120" Height="30" 
-                VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                VerticalAlignment="Center" HorizontalAlignment="Left"
+                Command="{Binding cAbrirProjeto}"/>
         </WrapPanel>
     </Grid>
 </Page>

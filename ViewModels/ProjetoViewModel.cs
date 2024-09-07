@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using WpfImportExport.Models;
@@ -8,8 +9,9 @@ using WpfImportExport.Services;
 
 namespace WpfImportExport.ViewModels
 {
-    internal class ProjetoViewModel : INotifyPropertyChanged
+    internal class ProjetoViewModel : ViewModelBase
     {
+        #region properties
         private Projeto _projeto;
 
         public Projeto Projeto
@@ -22,30 +24,38 @@ namespace WpfImportExport.ViewModels
             }
         }
 
-        public ICommand BrowseProject { get; set; }
+        public ICommand cProcurarProjeto { get; set; }
+        public ICommand cAbrirProjeto { get; set; }
 
         public ObservableCollection<string> TraceMessages => LogService.Instance.TraceMessages;
+        #endregion
 
+        #region ctor
         public ProjetoViewModel()
         {
             Projeto = new Projeto(); // Initialize Projeto
-            BrowseProject = new RelayCommand(ProcurarProjeto);
+            cProcurarProjeto = new RelayCommand(ProcurarProjeto);
+            cAbrirProjeto = new RelayCommand(AbrirProjeto);
         }
+        #endregion
 
+        #region methods
         private void ProcurarProjeto(object obj)
         {
-            Trace.WriteLine("ProcurarProjeto command executed");
+            var methodBase = MethodBase.GetCurrentMethod();
+            Trace.WriteLine(methodBase + " command executed");
             Projeto.ProcurarProjeto();
             OnPropertyChanged(nameof(Projeto));
             Trace.WriteLine($"Project path updated: {Projeto.projectPath}");
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void AbrirProjeto(object obj)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            Trace.WriteLine($"Property changed: {propertyName}");
+            var methodBase = MethodBase.GetCurrentMethod();
+            Trace.WriteLine(methodBase + " command executed");
+            Projeto.AbrirProjeto();
         }
+
+        #endregion
     }
 }

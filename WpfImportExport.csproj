@@ -69,7 +69,9 @@
     <Compile Include="Models\Projeto.cs" />
     <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\RelayCommand.cs" />
+    <Compile Include="Services\SiemensApiWrapper.cs" />
     <Compile Include="ViewModels\ProjetoViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AbrirProjeto.xaml.cs">
       <DependentUpon>AbrirProjeto.xaml</DependentUpon>
     </Compile>

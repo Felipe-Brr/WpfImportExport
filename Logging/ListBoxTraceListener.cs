@@ -9,13 +9,13 @@ namespace WpfImportExport.Logging
         public override void Write(string message)
         {
             // Use LogService to add timestamped message
-            LogService.Instance.AddMessage(FormatMessage(message));
+            LogService.Instance.InsertMessage(FormatMessage(message));
         }
 
         public override void WriteLine(string message)
         {
             // Use LogService to add timestamped message
-            LogService.Instance.AddMessage(FormatMessage(message));
+            LogService.Instance.InsertMessage(FormatMessage(message));
         }
 
         private string FormatMessage(string message)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Threading;
 
 namespace WpfImportExport.Services
 {
@@ -7,6 +8,7 @@ namespace WpfImportExport.Services
         // Singleton instance
         private static readonly LogService _instance = new LogService();
         public static LogService Instance => _instance;
+        private Dispatcher _dispatcher;
 
         // ObservableCollection to store trace messages
         public ObservableCollection<string> TraceMessages { get; private set; }
@@ -15,12 +17,21 @@ namespace WpfImportExport.Services
         private LogService()
         {
             TraceMessages = new ObservableCollection<string>();
+            _dispatcher = Dispatcher.CurrentDispatcher;
         }
 
         // Method to add a message to the trace log
-        public void AddMessage(string message)
+        public void InsertMessage(string message)
         {
-            TraceMessages.Add(message);
+
+            if (_dispatcher.CheckAccess())
+            {
+                TraceMessages.Insert(0, message);
+            }
+            else
+            {
+                _dispatcher.Invoke(() => TraceMessages.Insert(0,message));
+            }
         }
     }
 }
