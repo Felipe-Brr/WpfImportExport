@@ -15,7 +15,6 @@ namespace WpfImportExport.Interfaces
 
         private readonly ListBox _list;
         private StringBuilder _content;
-        private int _maxHorizontalSize;
 
         #endregion // fields
 

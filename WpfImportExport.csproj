@@ -63,6 +63,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Projeto.cs" />
+    <Compile Include="Services\RelayCommand.cs" />
+    <Compile Include="ViewModels\BuscarProjetoViewModel.cs" />
+    <Compile Include="ViewModels\TraceWriterViewModel.cs" />
+    <Compile Include="Views\AbrirProjeto.xaml.cs">
+      <DependentUpon>AbrirProjeto.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExportarBloco.xaml.cs">
+      <DependentUpon>ExportarBloco.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,6 +89,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AbrirProjeto.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExportarBloco.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Message.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -103,5 +128,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
