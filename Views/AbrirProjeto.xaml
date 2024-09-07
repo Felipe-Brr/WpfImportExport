@@ -3,8 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WpfImportExport.Views" xmlns:viewmodels="clr-namespace:WpfImportExport.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:BuscarProjetoViewModel}"
-      mc:Ignorable="d" 
+      xmlns:local="clr-namespace:WpfImportExport.Views"
+      xmlns:viewmodels="clr-namespace:WpfImportExport.ViewModels"
+      mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AbrirProjeto">
 
@@ -14,11 +15,11 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions >
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <Label 
             Grid.Row="0" Grid.Column="0" 
             Content="Caminho do Projeto" 
@@ -29,7 +30,7 @@
             Padding="1" 
             VerticalContentAlignment="Center"
             IsReadOnly="True"
-            Text="{Binding Projeto.projectPath}"
+            Text="{Binding Projeto.projectPath, Mode=OneWay}"
             />
         <WrapPanel Grid.Row="3" Grid.Column="0">
             <Button 
@@ -45,6 +46,5 @@
                 Width="120" Height="30" 
                 VerticalAlignment="Center" HorizontalAlignment="Left"/>
         </WrapPanel>
-        
     </Grid>
 </Page>

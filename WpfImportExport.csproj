@@ -65,7 +65,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Projeto.cs" />
     <Compile Include="Services\RelayCommand.cs" />
-    <Compile Include="ViewModels\BuscarProjetoViewModel.cs" />
+    <Compile Include="ViewModels\ProjetoViewModel.cs" />
     <Compile Include="ViewModels\TraceWriterViewModel.cs" />
     <Compile Include="Views\AbrirProjeto.xaml.cs">
       <DependentUpon>AbrirProjeto.xaml</DependentUpon>
