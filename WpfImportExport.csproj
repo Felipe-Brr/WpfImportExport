@@ -63,10 +63,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logging\ListBoxTraceListener.cs" />
+    <Compile Include="Logging\TextWriterTraceListener.cs" />
+    <Compile Include="Logging\TimestampedTextWriterTraceListener.cs" />
     <Compile Include="Models\Projeto.cs" />
+    <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\RelayCommand.cs" />
     <Compile Include="ViewModels\ProjetoViewModel.cs" />
-    <Compile Include="ViewModels\TraceWriterViewModel.cs" />
     <Compile Include="Views\AbrirProjeto.xaml.cs">
       <DependentUpon>AbrirProjeto.xaml</DependentUpon>
     </Compile>
@@ -84,7 +87,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\TraceWriter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
