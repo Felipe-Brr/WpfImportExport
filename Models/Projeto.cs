@@ -11,45 +11,44 @@ namespace WpfImportExport.Models
     internal class Projeto : INotifyPropertyChanged
     {
         private string _projectPath;
-
         private readonly SiemensApiWrapper _apiWrapper = new SiemensApiWrapper();
-        public SiemensApiWrapper SiemensApiWrapper
-        { 
-            get => _apiWrapper;
-            set { }
-            
-        }
-        public string projectPath
+
+        public SiemensApiWrapper SiemensApiWrapper => _apiWrapper;
+
+        public string ProjectPath
         {
             get => _projectPath;
             set
             {
-                _projectPath = value;
-                OnPropertyChanged();
+                if (_projectPath != value)
+                {
+                    _projectPath = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
         public void ProcurarProjeto([CallerMemberName] string caller = "")
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            if (methodBase.ReflectedType != null) Trace.WriteLine(methodBase.ReflectedType.Name + "." + methodBase.Name + " called from " + caller);
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "All Files (*.*)|*.*"; // You can set your own filter here
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "All Files (*.*)|*.*" // You can set your own filter here
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
                 // The user selected a file, and you can get the file path
-                projectPath = openFileDialog.FileName;
+                ProjectPath = openFileDialog.FileName;
             }
         }
 
         public void AbrirProjeto([CallerMemberName] string caller = "")
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            if (methodBase.ReflectedType != null) Trace.WriteLine(methodBase.ReflectedType.Name + "." + methodBase.Name + " called from " + caller);
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
             _apiWrapper.DoOpenTiaPortal();
-            var result = _apiWrapper.DoOpenProject(projectPath);
+            _apiWrapper.DoOpenProject(ProjectPath);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

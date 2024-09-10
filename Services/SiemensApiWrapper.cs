@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace WpfImportExport.Services
@@ -14,101 +13,86 @@ namespace WpfImportExport.Services
     internal class SiemensApiWrapper : INotifyPropertyChanged
     {
         #region properties
-        public TiaPortal TiaPortal { get; set; }
-        public bool TiaPortalIsDisposed { get; set; }
-        public Project CurrentProject { get; set; }
-
+        public TiaPortal TiaPortal { get; private set; }
+        public bool TiaPortalIsDisposed { get; private set; }
+        public Project CurrentProject { get; private set; }
         #endregion
 
-        private Dispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher;
 
+        #region ctor
         public SiemensApiWrapper([CallerMemberName] string caller = "")
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            Trace.WriteLine(methodBase.Name + " called from " + caller);
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
             _dispatcher = Dispatcher.CurrentDispatcher;
         }
+        #endregion
 
+        #region methods
         public void DoOpenTiaPortal([CallerMemberName] string caller = "")
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            if (methodBase.ReflectedType != null) Trace.Write(methodBase.ReflectedType.Name + "." + methodBase.Name + " called from " + caller);
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
 
             if (TiaPortal != null)
             {
-                Trace.Write("Tia Portal já está aberto");
+                Trace.WriteLine("Tia Portal já está aberto");
                 return;
             }
 
-            _dispatcher.Invoke(() =>
+            try
             {
-                try
-                {
-                    Trace.Write("Abrindo Tia Portal");
-                    TiaPortal = new TiaPortal(TiaPortalMode.WithUserInterface);
-                    Trace.Write("Tia portal aberto");
-                }
-                catch (Exception e)
-                {
-                    Trace.Write(e);
-                }
-            });
+                Trace.WriteLine("Abrindo Tia Portal");
+                TiaPortal = new TiaPortal(TiaPortalMode.WithUserInterface);
+                TiaPortalIsDisposed = false;
+                Trace.WriteLine("Tia Portal aberto");
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+            }
         }
 
-        public async Task<bool> DoOpenProject(string path, [CallerMemberName] string caller = "")
+        public void DoOpenProject(string path, [CallerMemberName] string caller = "")
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            if (methodBase.ReflectedType != null) Trace.Write(methodBase.ReflectedType.Name + "." + methodBase.Name + " called from " + caller);
-
-            var result = false;
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
 
             DoCloseProject();
 
-            var task = _dispatcher.Invoke(async () =>
+            try
             {
-                Trace.Write("Abrindo projeto");
-                try
-                {
-                    FileInfo filepath = new FileInfo(path);
-                    var newProject = TiaPortal.Projects.Open(filepath);
-                    Trace.Write($"TiaPortal.Projects.Open({path})");
-                    if (newProject != null)
-                    {
-                        CurrentProject = newProject;
-                        result = true;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e);
-                }
-                return result;
-            });
-
-            return await task;
+                Trace.WriteLine("Abrindo projeto");
+                var filepath = new FileInfo(path);
+                CurrentProject = TiaPortal.Projects.Open(filepath);
+                Trace.WriteLine($"TiaPortal.Projects.Open({path})");
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+            }
         }
 
         public void DoCloseProject([CallerMemberName] string caller = "")
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            if (methodBase.ReflectedType != null) Trace.Write(methodBase.ReflectedType.Name + "." + methodBase.Name + " called from " + caller);
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
 
             _dispatcher.Invoke(() =>
             {
                 if (!TiaPortalIsDisposed && TiaPortal?.Projects.Count > 0)
                 {
-                    var project = TiaPortal.Projects.FirstOrDefault();
-                    project?.Close();
+                    TiaPortal.Projects.FirstOrDefault()?.Close();
                 }
                 CurrentProject = null;
             });
         }
+        #endregion
 
+        #region events
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

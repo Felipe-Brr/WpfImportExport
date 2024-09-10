@@ -30,7 +30,7 @@
             Padding="1" 
             VerticalContentAlignment="Center"
             IsReadOnly="True"
-            Text="{Binding Projeto.projectPath, Mode=OneWay}"
+            Text="{Binding Projeto.ProjectPath, Mode=OneWay}"
             />
         <WrapPanel Grid.Row="3" Grid.Column="0">
             <Button 

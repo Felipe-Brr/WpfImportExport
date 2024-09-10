@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfImportExport.Models;
 using WpfImportExport.Services;
@@ -19,13 +18,16 @@ namespace WpfImportExport.ViewModels
             get => _projeto;
             set
             {
-                _projeto = value;
-                OnPropertyChanged();
+                if (_projeto != value)
+                {
+                    _projeto = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
-        public ICommand cProcurarProjeto { get; set; }
-        public ICommand cAbrirProjeto { get; set; }
+        public ICommand cProcurarProjeto { get; }
+        public ICommand cAbrirProjeto { get; }
 
         public ObservableCollection<string> TraceMessages => LogService.Instance.TraceMessages;
         #endregion
@@ -42,18 +44,16 @@ namespace WpfImportExport.ViewModels
         #region methods
         private void ProcurarProjeto(object obj)
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            Trace.WriteLine(methodBase + " command executed");
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
             Projeto.ProcurarProjeto();
             OnPropertyChanged(nameof(Projeto));
-            Trace.WriteLine($"Project path updated: {Projeto.projectPath}");
+            Trace.WriteLine($"Project path updated: {Projeto.ProjectPath}");
         }
 
-        private void AbrirProjeto(object obj)
+        private async void AbrirProjeto(object obj)
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            Trace.WriteLine(methodBase + " command executed");
-            Projeto.AbrirProjeto();
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
+            await Task.Run(() => Projeto.AbrirProjeto());
         }
 
         #endregion
