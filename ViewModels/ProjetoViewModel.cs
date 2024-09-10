@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Siemens.Engineering.SW.Blocks;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -10,9 +11,7 @@ namespace WpfImportExport.ViewModels
 {
     internal class ProjetoViewModel : ViewModelBase
     {
-        #region properties
         private Projeto _projeto;
-
         public Projeto Projeto
         {
             get => _projeto;
@@ -21,32 +20,44 @@ namespace WpfImportExport.ViewModels
                 if (_projeto != value)
                 {
                     _projeto = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Projeto));
+                }
+            }
+        }
+
+        private ObservableCollection<PlcBlock> _blocos;
+        public ObservableCollection<PlcBlock> Blocos
+        {
+            get => _blocos;
+            set
+            {
+                if (_blocos != value)
+                {
+                    _blocos = value;
+                    OnPropertyChanged(nameof(Blocos));
                 }
             }
         }
 
         public ICommand cProcurarProjeto { get; }
         public ICommand cAbrirProjeto { get; }
+        public ICommand cProcurarCaminhoExport { get; }
 
         public ObservableCollection<string> TraceMessages => LogService.Instance.TraceMessages;
-        #endregion
 
-        #region ctor
         public ProjetoViewModel()
         {
-            Projeto = new Projeto(); // Initialize Projeto
+            Projeto = new Projeto();
+            Blocos = new ObservableCollection<PlcBlock>();
             cProcurarProjeto = new RelayCommand(ProcurarProjeto);
             cAbrirProjeto = new RelayCommand(AbrirProjeto);
+            cProcurarCaminhoExport = new RelayCommand(ProcurarCaminhoExport);
         }
-        #endregion
 
-        #region methods
         private void ProcurarProjeto(object obj)
         {
             Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
             Projeto.ProcurarProjeto();
-            OnPropertyChanged(nameof(Projeto));
             Trace.WriteLine($"Project path updated: {Projeto.ProjectPath}");
         }
 
@@ -54,8 +65,24 @@ namespace WpfImportExport.ViewModels
         {
             Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
             await Task.Run(() => Projeto.AbrirProjeto());
+            Blocos.Clear();
+            foreach (var bloco in Projeto.ListarBlocos())
+            {
+                Blocos.Add(bloco);// Adiciona o bloco à coleção Blocos
+            }
+
         }
 
-        #endregion
+        private void ProcurarCaminhoExport(object obj)
+        {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
+            Projeto.ProcurarCaminhoExport();
+            Trace.WriteLine($"Export path updated: {Projeto.ExportPath}");
+            Blocos.Clear();
+            foreach (var bloco in Projeto.ListarBlocos())
+            {
+                Blocos.Add(bloco);// Adiciona o bloco à coleção Blocos
+            }
+        }
     }
 }

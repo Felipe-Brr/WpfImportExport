@@ -1,5 +1,9 @@
 ﻿using Siemens.Engineering;
+using Siemens.Engineering.HW.Features;
+using Siemens.Engineering.HW;
+using Siemens.Engineering.SW;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
+using Siemens.Engineering.SW.Blocks;
 
 namespace WpfImportExport.Services
 {
@@ -83,6 +88,74 @@ namespace WpfImportExport.Services
                 }
                 CurrentProject = null;
             });
+        }
+
+        public List<PlcBlock> ListBlocks()
+        {
+            List<PlcBlock> listablocks = new List<PlcBlock>();
+            try
+            {
+                foreach (var plcSoftware in GetAllPlcSoftwares(CurrentProject))
+                {
+                    foreach (var block in plcSoftware.BlockGroup.Blocks)
+                    {
+                        listablocks.Add(block);
+                    }
+                }
+            }catch(Exception ex)
+            {
+                Trace.WriteLine($"An error occurred: {ex.Message}");
+            }
+            
+            return listablocks;
+        }
+
+        private void ExportRegularBlock(PlcSoftware plcSoftware,string nameBlock, string ExportPath)
+        {
+            var methodBase = MethodBase.GetCurrentMethod();
+            Trace.WriteLine(methodBase.Name);
+
+            PlcBlock plcBlock = plcSoftware.BlockGroup.Blocks.Find(nameBlock);
+            FileInfo exportPath = new FileInfo(ExportPath + $"\\{plcBlock.Name}.xml");
+
+            try
+            {
+                plcBlock.Export(exportPath, ExportOptions.WithDefaults);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"An error occurred: {ex.Message}");
+            }
+
+        }
+
+        public static IEnumerable<PlcSoftware> GetAllPlcSoftwares(Project project, [CallerMemberName] string caller = "")
+        {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
+
+            if (project == null)
+                throw new ArgumentNullException(nameof(project), "Parameter is null");
+            foreach (var device in project.Devices)
+            {
+                var ret = GetPlcSoftware(device);
+                if (ret != null)
+                    yield return ret;
+            }
+        }
+
+        public static PlcSoftware GetPlcSoftware(Device device, [CallerMemberName] string caller = "")
+        {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
+
+            if (device == null)
+                throw new ArgumentNullException(nameof(device), "Parameter is null");
+            foreach (var devItem in device.DeviceItems)
+            {
+                var target = ((IEngineeringServiceProvider)devItem).GetService<SoftwareContainer>();
+                if (target != null && target.Software is PlcSoftware)
+                    return (PlcSoftware)target.Software;
+            }
+            return null;
         }
         #endregion
 

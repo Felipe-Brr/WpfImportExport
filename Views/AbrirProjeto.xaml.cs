@@ -8,7 +8,7 @@ namespace WpfImportExport.Views
         public AbrirProjeto()
         {
             InitializeComponent();
-            DataContext = new ProjetoViewModel();
+            DataContext = MainViewModel.ProjetoViewModel;
         }
     }
 }

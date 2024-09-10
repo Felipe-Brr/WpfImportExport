@@ -24,7 +24,6 @@ namespace WpfImportExport.Views
         public Message()
         {
             InitializeComponent();
-            DataContext = new ProjetoViewModel();
         }
     }
 }
