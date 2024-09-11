@@ -7,30 +7,42 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ExportarBloco">
-
-    <Grid>
+    <Page.Background>
+        <SolidColorBrush Color="#F2F2F2"/>
+    </Page.Background>
+    <Grid HorizontalAlignment="Center" Margin="2">
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="500"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
         <Label 
-            Grid.Row="1" Grid.Column="0" 
+            Grid.Row="0" Grid.Column="0" 
+            Content="Blocos no projeto" 
+            VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <ListBox 
+            x:Name="lbBlocos" 
+            Grid.Row="1" Grid.Column="0"
+            ItemsSource="{Binding Projeto.Blocos}"
+            DisplayMemberPath="Name"
+            SelectedItem="{Binding BlocoSelecionado, Mode=TwoWay}"/>
+        <Label 
+            Grid.Row="2" Grid.Column="0" 
             Content="Caminho para Exportar" 
             VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
         <TextBox 
             x:Name="tbPathExport" 
-            Grid.Row="2" Grid.Column="0" 
+            Grid.Row="3" Grid.Column="0" 
             Padding="1" 
             VerticalContentAlignment="Center"
             IsReadOnly="True"
             Text="{Binding Projeto.ExportPath, Mode=OneWay}"/>
-        <WrapPanel Grid.Row="3" Grid.Column="0">
+        <WrapPanel Grid.Row="4" Grid.Column="0">
             <Button 
                 x:Name="btnBrowsePath" 
                 Content="Procurar Caminho" 
@@ -46,11 +58,5 @@
                 VerticalAlignment="Center" HorizontalAlignment="Left"
                 Command="{Binding cBlockExport}"/>
         </WrapPanel>
-        <ListBox 
-            x:Name="lbBlocos" 
-            Grid.Row="0" Grid.Column="0"
-            ItemsSource="{Binding Blocos}"
-            DisplayMemberPath="Name"
-            SelectedItem="{Binding BlocoSelecionado, Mode=TwoWay}"/>
     </Grid>
 </Page>
