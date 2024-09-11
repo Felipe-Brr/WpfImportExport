@@ -17,11 +17,11 @@ using WpfImportExport.ViewModels;
 namespace WpfImportExport.Views
 {
     /// <summary>
-    /// Interação lógica para Message.xam
+    /// Interação lógica para ImportarBloco.xam
     /// </summary>
-    public partial class Message : Page
+    public partial class ImportarBloco : Page
     {
-        public Message()
+        public ImportarBloco()
         {
             InitializeComponent();
             DataContext = MainViewModel.ProjetoViewModel;

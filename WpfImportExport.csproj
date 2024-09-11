@@ -63,15 +63,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logging\ListBoxTraceListener.cs" />
+    <Compile Include="Logging\TextWriterTraceListener.cs" />
+    <Compile Include="Logging\TimestampedTextWriterTraceListener.cs" />
     <Compile Include="Models\Projeto.cs" />
+    <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\RelayCommand.cs" />
-    <Compile Include="ViewModels\BuscarProjetoViewModel.cs" />
-    <Compile Include="ViewModels\TraceWriterViewModel.cs" />
+    <Compile Include="Services\SiemensApiWrapper.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ProjetoViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AbrirProjeto.xaml.cs">
       <DependentUpon>AbrirProjeto.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExportarBloco.xaml.cs">
       <DependentUpon>ExportarBloco.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImportarBloco.xaml.cs">
+      <DependentUpon>ImportarBloco.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
@@ -84,7 +93,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\TraceWriter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -94,6 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExportarBloco.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImportarBloco.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

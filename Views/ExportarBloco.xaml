@@ -3,46 +3,54 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WpfImportExport.Views"
+      xmlns:viewmodels="clr-namespace:WpfImportExport.ViewModels" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ExportarBloco">
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions >
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label 
-            Grid.Row="0" Grid.Column="0" 
+            Grid.Row="1" Grid.Column="0" 
             Content="Caminho para Exportar" 
             VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
         <TextBox 
             x:Name="tbPathExport" 
-            Grid.Row="1" Grid.Column="0" 
+            Grid.Row="2" Grid.Column="0" 
             Padding="1" 
             VerticalContentAlignment="Center"
-            IsReadOnly="True"/>
-        <WrapPanel Grid.Row="2" Grid.Column="0" >
+            IsReadOnly="True"
+            Text="{Binding Projeto.ExportPath, Mode=OneWay}"/>
+        <WrapPanel Grid.Row="3" Grid.Column="0">
             <Button 
                 x:Name="btnBrowsePath" 
                 Content="Procurar Caminho" 
                 Margin="2" 
                 Width="120" Height="30" 
-                VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                VerticalAlignment="Center" HorizontalAlignment="Left"
+                Command="{Binding cProcurarCaminhoExport}"/>
             <Button 
                 x:Name="btnExport" 
                 Content="Exportar" 
                 Margin="10,0" 
                 Width="120" Height="30" 
-                VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                VerticalAlignment="Center" HorizontalAlignment="Left"
+                Command="{Binding cBlockExport}"/>
         </WrapPanel>
-        
-
+        <ListBox 
+            x:Name="lbBlocos" 
+            Grid.Row="0" Grid.Column="0"
+            ItemsSource="{Binding Blocos}"
+            DisplayMemberPath="Name"
+            SelectedItem="{Binding BlocoSelecionado, Mode=TwoWay}"/>
     </Grid>
 </Page>
