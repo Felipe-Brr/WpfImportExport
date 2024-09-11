@@ -15,7 +15,7 @@ using Siemens.Engineering.SW.Blocks;
 
 namespace WpfImportExport.Services
 {
-    internal class SiemensApiWrapper : INotifyPropertyChanged
+    public class SiemensApiWrapper : INotifyPropertyChanged
     {
         #region properties
         public TiaPortal TiaPortal { get; private set; }
@@ -110,12 +110,11 @@ namespace WpfImportExport.Services
             return listablocks;
         }
 
-        private void ExportRegularBlock(PlcSoftware plcSoftware,string nameBlock, string ExportPath)
+        public void ExportRegularBlock(PlcBlock plcBlock, string ExportPath)
         {
             var methodBase = MethodBase.GetCurrentMethod();
             Trace.WriteLine(methodBase.Name);
 
-            PlcBlock plcBlock = plcSoftware.BlockGroup.Blocks.Find(nameBlock);
             FileInfo exportPath = new FileInfo(ExportPath + $"\\{plcBlock.Name}.xml");
 
             try
@@ -128,6 +127,24 @@ namespace WpfImportExport.Services
             }
 
         }
+
+        public void ImportBlocks(string ImportFilePath)
+        {
+            foreach (var plcSoftware in GetAllPlcSoftwares(CurrentProject))
+            {
+                PlcBlockGroup blockGroup = plcSoftware.BlockGroup;
+                FileInfo importPath = new FileInfo(ImportFilePath);
+                try
+                {
+                    IList<PlcBlock> blocks = blockGroup.Blocks.Import(importPath, ImportOptions.Override);
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine($"An error occurred: {ex.Message}");
+                }
+            }
+        }
+
 
         public static IEnumerable<PlcSoftware> GetAllPlcSoftwares(Project project, [CallerMemberName] string caller = "")
         {

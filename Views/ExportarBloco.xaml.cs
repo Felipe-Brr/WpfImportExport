@@ -24,6 +24,7 @@ namespace WpfImportExport.Views
         public ExportarBloco()
         {
             InitializeComponent();
+            DataContext = MainViewModel.ProjetoViewModel;
         }
     }
 }

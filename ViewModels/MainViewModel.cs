@@ -1,9 +1,9 @@
 ﻿namespace WpfImportExport.ViewModels
 {
-    public class MainViewModel
+    public static class MainViewModel
     {
-        internal static ProjetoViewModel ProjetoViewModel { get; set; }
-        public MainViewModel() 
+        public static ProjetoViewModel ProjetoViewModel { get; set; }
+        static MainViewModel() 
         {
         
             ProjetoViewModel = new ProjetoViewModel();

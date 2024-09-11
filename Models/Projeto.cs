@@ -11,7 +11,7 @@ using WpfImportExport.Services;
 
 namespace WpfImportExport.Models
 {
-    internal class Projeto : INotifyPropertyChanged
+    public class Projeto : INotifyPropertyChanged
     {
         
         
@@ -45,7 +45,21 @@ namespace WpfImportExport.Models
                 }
             }
         }
-        
+
+        private string _importFilePath;
+        public string ImportFilePath
+        {
+            get => _importFilePath;
+            set
+            {
+                if (_importFilePath != value)
+                {
+                    _importFilePath = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         public void ProcurarProjeto([CallerMemberName] string caller = "")
         {
@@ -70,11 +84,6 @@ namespace WpfImportExport.Models
             SiemensApiWrapper.DoOpenProject(ProjectPath);
         }
 
-        public List<PlcBlock> ListarBlocos()
-        {
-            return SiemensApiWrapper.ListBlocks();
-        }
-
         public void ProcurarCaminhoExport([CallerMemberName] string caller = "")
         {
             Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
@@ -97,6 +106,34 @@ namespace WpfImportExport.Models
             {
                 ExportPath = string.Empty;
             }
+        }
+        public List<PlcBlock> ListarBlocos()
+        {
+            return SiemensApiWrapper.ListBlocks();
+        }
+
+        public void ExportarBlocos(PlcBlock plcBlock)
+        {
+            SiemensApiWrapper.ExportRegularBlock(plcBlock,ExportPath);
+        }
+        public void ProcurarArquivoImportar([CallerMemberName] string caller = "")
+        {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
+
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "All Files (*.*)|*.*" // You can set your own filter here
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // The user selected a file, and you can get the file path
+                ImportFilePath = openFileDialog.FileName;
+            }
+        }
+        public void ImportarBlocos()
+        {
+            SiemensApiWrapper.ImportBlocks(ImportFilePath);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

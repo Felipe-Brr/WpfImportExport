@@ -21,6 +21,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -30,17 +31,24 @@
             Grid.Row="0" Grid.Column="0"
             x:Name="abrirProjeto" 
             NavigationUIVisibility="Hidden">
-
+            
         </Frame>
         <Frame 
             Grid.Row="1" Grid.Column="0"
-            Grid.ColumnSpan="2"
+            Grid.ColumnSpan="1"
             x:Name="exportarBloco" 
             NavigationUIVisibility="Hidden">
 
         </Frame>
         <Frame 
             Grid.Row="2" Grid.Column="0"
+            Grid.ColumnSpan="2"
+            x:Name="importarBloco" 
+            NavigationUIVisibility="Hidden">
+
+        </Frame>
+        <Frame 
+            Grid.Row="3" Grid.Column="0"
             Grid.ColumnSpan="2"
             x:Name="message" 
             NavigationUIVisibility="Hidden">

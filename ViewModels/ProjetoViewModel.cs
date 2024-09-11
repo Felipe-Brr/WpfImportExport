@@ -9,7 +9,7 @@ using WpfImportExport.Services;
 
 namespace WpfImportExport.ViewModels
 {
-    internal class ProjetoViewModel : ViewModelBase
+    public class ProjetoViewModel : ViewModelBase
     {
         private Projeto _projeto;
         public Projeto Projeto
@@ -38,10 +38,26 @@ namespace WpfImportExport.ViewModels
                 }
             }
         }
+        private PlcBlock _blocoSelecionado;
+        public PlcBlock BlocoSelecionado
+        {
+            get => _blocoSelecionado;
+            set
+            {
+                if (_blocoSelecionado != value)
+                {
+                    _blocoSelecionado = value;
+                    OnPropertyChanged(nameof(BlocoSelecionado));
+                }
+            }
+        }
 
         public ICommand cProcurarProjeto { get; }
         public ICommand cAbrirProjeto { get; }
         public ICommand cProcurarCaminhoExport { get; }
+        public ICommand cBlockExport { get; }
+        public ICommand cBlockImport { get; }
+        public ICommand cProcurarArquivoImportar { get; }
 
         public ObservableCollection<string> TraceMessages => LogService.Instance.TraceMessages;
 
@@ -52,6 +68,9 @@ namespace WpfImportExport.ViewModels
             cProcurarProjeto = new RelayCommand(ProcurarProjeto);
             cAbrirProjeto = new RelayCommand(AbrirProjeto);
             cProcurarCaminhoExport = new RelayCommand(ProcurarCaminhoExport);
+            cBlockExport = new RelayCommand(BlockExport);
+            cBlockImport = new RelayCommand(BlockImport);
+            cProcurarArquivoImportar = new RelayCommand(ProcurarArquivoImportar);
         }
 
         private void ProcurarProjeto(object obj)
@@ -72,17 +91,27 @@ namespace WpfImportExport.ViewModels
             }
 
         }
+        private void ProcurarArquivoImportar(object obj)
+        {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
+            Projeto.ProcurarArquivoImportar();
+            Trace.WriteLine($"Arquivo carregado: {Projeto.ImportFilePath}");
+        }
+        private void BlockExport(object obj)
+        {
+            Projeto.ExportarBlocos(BlocoSelecionado);
+        }
+
+        private async void BlockImport(object obj)
+        {
+            await Task.Run(() => Projeto.ImportarBlocos());
+        }
 
         private void ProcurarCaminhoExport(object obj)
         {
             Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
             Projeto.ProcurarCaminhoExport();
             Trace.WriteLine($"Export path updated: {Projeto.ExportPath}");
-            Blocos.Clear();
-            foreach (var bloco in Projeto.ListarBlocos())
-            {
-                Blocos.Add(bloco);// Adiciona o bloco à coleção Blocos
-            }
         }
     }
 }
