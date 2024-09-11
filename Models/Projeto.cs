@@ -13,8 +13,8 @@ namespace WpfImportExport.Models
 {
     public class Projeto : INotifyPropertyChanged
     {
-        
-        
+
+        #region properties
         private readonly SiemensApiWrapper _apiWrapper = new SiemensApiWrapper();
         public SiemensApiWrapper SiemensApiWrapper => _apiWrapper;
 
@@ -60,7 +60,22 @@ namespace WpfImportExport.Models
             }
         }
 
+        private ObservableCollection<PlcBlock> _blocos;
+        public ObservableCollection<PlcBlock> Blocos
+        {
+            get => _blocos;
+            set
+            {
+                if (_blocos != value)
+                {
+                    _blocos = value;
+                    OnPropertyChanged(nameof(Blocos));
+                }
+            }
+        }
+        #endregion
 
+        #region methods
         public void ProcurarProjeto([CallerMemberName] string caller = "")
         {
             Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
@@ -82,6 +97,7 @@ namespace WpfImportExport.Models
             Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
             SiemensApiWrapper.DoOpenTiaPortal();
             SiemensApiWrapper.DoOpenProject(ProjectPath);
+            Blocos = new ObservableCollection<PlcBlock>(ListarBlocos());
         }
 
         public void ProcurarCaminhoExport([CallerMemberName] string caller = "")
@@ -107,13 +123,15 @@ namespace WpfImportExport.Models
                 ExportPath = string.Empty;
             }
         }
-        public List<PlcBlock> ListarBlocos()
+        public List<PlcBlock> ListarBlocos([CallerMemberName] string caller = "")
         {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
             return SiemensApiWrapper.ListBlocks();
         }
 
-        public void ExportarBlocos(PlcBlock plcBlock)
+        public void ExportarBlocos(PlcBlock plcBlock, [CallerMemberName] string caller = "")
         {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
             SiemensApiWrapper.ExportRegularBlock(plcBlock,ExportPath);
         }
         public void ProcurarArquivoImportar([CallerMemberName] string caller = "")
@@ -131,16 +149,21 @@ namespace WpfImportExport.Models
                 ImportFilePath = openFileDialog.FileName;
             }
         }
-        public void ImportarBlocos()
+        public void ImportarBlocos([CallerMemberName] string caller = "")
         {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
             SiemensApiWrapper.ImportBlocks(ImportFilePath);
+            Blocos = new ObservableCollection<PlcBlock>(ListarBlocos());
         }
+        #endregion
 
+        #region events
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

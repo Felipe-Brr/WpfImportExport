@@ -24,10 +24,7 @@ namespace WpfImportExport
             InitializeComponent();
             _projetoViewModel = new ProjetoViewModel(); // Inicialização padrão
             DataContext = _projetoViewModel;
-            abrirProjeto.Content = new AbrirProjeto();
-            exportarBloco.Content = new ExportarBloco();
-            importarBloco.Content = new ImportarBloco();
-            message.Content = new Views.Message();
+            MainContent.Content = new ImportarExportar();
         }
 
         // Construtor existente
@@ -36,10 +33,7 @@ namespace WpfImportExport
             InitializeComponent();
             _projetoViewModel = projetoViewModel;
             DataContext = _projetoViewModel;
-            abrirProjeto.Content = new AbrirProjeto();
-            exportarBloco.Content = new ExportarBloco();
-            importarBloco.Content = new ImportarBloco();
-            message.Content = new Views.Message();
+            MainContent.Content = new ImportarExportar();
         }
     }
 }

@@ -11,6 +11,7 @@ namespace WpfImportExport.ViewModels
 {
     public class ProjetoViewModel : ViewModelBase
     {
+        #region properties
         private Projeto _projeto;
         public Projeto Projeto
         {
@@ -25,19 +26,6 @@ namespace WpfImportExport.ViewModels
             }
         }
 
-        private ObservableCollection<PlcBlock> _blocos;
-        public ObservableCollection<PlcBlock> Blocos
-        {
-            get => _blocos;
-            set
-            {
-                if (_blocos != value)
-                {
-                    _blocos = value;
-                    OnPropertyChanged(nameof(Blocos));
-                }
-            }
-        }
         private PlcBlock _blocoSelecionado;
         public PlcBlock BlocoSelecionado
         {
@@ -60,11 +48,11 @@ namespace WpfImportExport.ViewModels
         public ICommand cProcurarArquivoImportar { get; }
 
         public ObservableCollection<string> TraceMessages => LogService.Instance.TraceMessages;
-
+        #endregion
+        #region methods
         public ProjetoViewModel()
         {
             Projeto = new Projeto();
-            Blocos = new ObservableCollection<PlcBlock>();
             cProcurarProjeto = new RelayCommand(ProcurarProjeto);
             cAbrirProjeto = new RelayCommand(AbrirProjeto);
             cProcurarCaminhoExport = new RelayCommand(ProcurarCaminhoExport);
@@ -75,43 +63,41 @@ namespace WpfImportExport.ViewModels
 
         private void ProcurarProjeto(object obj)
         {
-            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} comando executado");
             Projeto.ProcurarProjeto();
-            Trace.WriteLine($"Project path updated: {Projeto.ProjectPath}");
+            Trace.WriteLine($"Caminho de projeto atualizado: {Projeto.ProjectPath}");
         }
 
         private async void AbrirProjeto(object obj)
         {
-            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} comando executado");
             await Task.Run(() => Projeto.AbrirProjeto());
-            Blocos.Clear();
-            foreach (var bloco in Projeto.ListarBlocos())
-            {
-                Blocos.Add(bloco);// Adiciona o bloco à coleção Blocos
-            }
 
         }
         private void ProcurarArquivoImportar(object obj)
         {
-            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} comando executado");
             Projeto.ProcurarArquivoImportar();
             Trace.WriteLine($"Arquivo carregado: {Projeto.ImportFilePath}");
         }
         private void BlockExport(object obj)
         {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} comando executado");
             Projeto.ExportarBlocos(BlocoSelecionado);
         }
 
         private async void BlockImport(object obj)
         {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} comando executado");
             await Task.Run(() => Projeto.ImportarBlocos());
         }
 
         private void ProcurarCaminhoExport(object obj)
         {
-            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} command executed");
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()} comando executado");
             Projeto.ProcurarCaminhoExport();
-            Trace.WriteLine($"Export path updated: {Projeto.ExportPath}");
+            Trace.WriteLine($"Caminho para exportar atualizado: {Projeto.ExportPath}");
         }
+        #endregion
     }
 }

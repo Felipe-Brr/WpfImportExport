@@ -82,6 +82,9 @@
     <Compile Include="Views\ImportarBloco.xaml.cs">
       <DependentUpon>ImportarBloco.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ImportarExportar.xaml.cs">
+      <DependentUpon>ImportarExportar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
@@ -106,6 +109,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImportarBloco.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImportarExportar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

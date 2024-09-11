@@ -90,8 +90,9 @@ namespace WpfImportExport.Services
             });
         }
 
-        public List<PlcBlock> ListBlocks()
+        public List<PlcBlock> ListBlocks([CallerMemberName] string caller = "")
         {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
             List<PlcBlock> listablocks = new List<PlcBlock>();
             try
             {
@@ -110,16 +111,16 @@ namespace WpfImportExport.Services
             return listablocks;
         }
 
-        public void ExportRegularBlock(PlcBlock plcBlock, string ExportPath)
+        public void ExportRegularBlock(PlcBlock plcBlock, string ExportPath, [CallerMemberName] string caller = "")
         {
-            var methodBase = MethodBase.GetCurrentMethod();
-            Trace.WriteLine(methodBase.Name);
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
 
             FileInfo exportPath = new FileInfo(ExportPath + $"\\{plcBlock.Name}.xml");
 
             try
             {
                 plcBlock.Export(exportPath, ExportOptions.WithDefaults);
+                Trace.WriteLine($"Bloco: {plcBlock.Name} exportado em: {exportPath.FullName}");
             }
             catch (Exception ex)
             {
@@ -128,8 +129,9 @@ namespace WpfImportExport.Services
 
         }
 
-        public void ImportBlocks(string ImportFilePath)
+        public void ImportBlocks(string ImportFilePath, [CallerMemberName] string caller = "")
         {
+            Trace.WriteLine($"{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name} called from {caller}");
             foreach (var plcSoftware in GetAllPlcSoftwares(CurrentProject))
             {
                 PlcBlockGroup blockGroup = plcSoftware.BlockGroup;
@@ -137,6 +139,7 @@ namespace WpfImportExport.Services
                 try
                 {
                     IList<PlcBlock> blocks = blockGroup.Blocks.Import(importPath, ImportOptions.Override);
+                    Trace.WriteLine($"Bloco: {importPath.Name} importado");
                 }
                 catch (Exception ex)
                 {
