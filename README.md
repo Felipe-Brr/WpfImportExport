@@ -1,6 +1,6 @@
-# WpfImportExport
+<h1 align="center">:file_cabinet: WpfImportExport</h1>
 
-## Descrição
+## :memo: Descrição
 
 O projeto **WpfImportExport** é uma aplicação WPF que permite a importação e exportação de blocos PLC do TIA Portal V18 utilizando a API Siemens TIA Openness. A aplicação fornece uma interface gráfica para facilitar a interação com os arquivos de projeto e os blocos PLC.
 
@@ -12,7 +12,7 @@ O projeto **WpfImportExport** é uma aplicação WPF que permite a importação 
 - **Views/Message.xaml.cs**: Define a lógica de interação para a página de mensagens.
 - **Views/ExportarBloco.xaml.cs**: Define a lógica de interação para a página de exportação de blocos.
 
-## Funcionalidades
+## :books: Funcionalidades
 
 - **Procurar Projeto**: Permite ao usuário selecionar um arquivo de projeto.
 - **Abrir Projeto**: Abre o projeto selecionado utilizando a API Siemens.
@@ -21,12 +21,12 @@ O projeto **WpfImportExport** é uma aplicação WPF que permite a importação 
 - **Procurar Arquivo para Importar**: Permite ao usuário selecionar um arquivo para importar blocos PLC.
 - **Importar Blocos**: Importa os blocos PLC do arquivo selecionado.
 
-## Requisitos
+## :wrench: Requisitos
 
 - **.NET Framework 4.8**
 - **C# 7.3**
 
-## Como Executar
+## :rocket: Rodando o projeto
 
 1. Clone o repositório.
 2. Abra a solução no Visual Studio.
@@ -45,6 +45,18 @@ A classe `Projeto` gerencia as operações de importação e exportação de blo
 A classe `ProjetoViewModel` gerencia a lógica de apresentação para a interface do usuário.
 
 
-## Contribuição
+## :handshake: Colaboradores
+<table>
+  <tr>
+    <td align="center">
+      <a href="http://github.com/Felipe-Brr">
+        <img src="https://github.com/Felipe-Brr.png" width="100px;" alt="Foto de Felipe Ribeiro no GitHub"/><br>
+        <sub>
+          <b>Felipe Ribeiro</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
